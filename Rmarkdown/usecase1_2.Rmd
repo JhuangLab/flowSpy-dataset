@@ -81,13 +81,12 @@ meta.data <- data.frame(cell = rownames(exp.data),
                         stage = "D0")
 fspy <- createFSPY(raw.data = exp.data, markers = markers,
                    meta.data = meta.data,
-                   normalization.method = "none",
-                   verbose = T)
+                   normalization.method = "none")
 
 # Cluster cells by SOM algorithm
 # Set random seed to make results reproducible
 set.seed(6)
-fspy <- runCluster(fspy, cluster.method = "som", xdim = 10, ydim = 10, verbose = T)
+fspy <- runCluster(fspy, cluster.method = "som", xdim = 10, ydim = 10)
 
 # Cluster based downsampling
 # The total cell number is 236,187, and we can just keep 10% cells to reduce 
@@ -100,17 +99,17 @@ fspy <- processingCluster(fspy, perplexity = 5,downsampling.size = 0.1)
 fspy
 
 # run Principal Component Analysis (PCA)
-fspy <- runFastPCA(fspy, verbose = T)
+fspy <- runFastPCA(fspy)
 
 # run t-Distributed Stochastic Neighbor Embedding (tSNE)
 set.seed(1)
-fspy <- runTSNE(fspy, dims = 2, verbose = T)
+fspy <- runTSNE(fspy, dims = 2)
 
 # run Diffusion map
-fspy <- runDiffusionMap(fspy, verbose = T)
+fspy <- runDiffusionMap(fspy)
 
 # run Uniform Manifold Approximation and Projection (UMAP)
-fspy <- runUMAP(fspy, verbose = T)
+fspy <- runUMAP(fspy)
 
 ###########################################
 # This is visualization module
@@ -161,31 +160,31 @@ plot3D(fspy, item.use = c("DC_1", "DC_2", "DC_3"), color.by = "CD3",
 # 5. UMAP
 
 # 1. Raw expression matrix
-fspy <- buildTree(fspy, dim.type = "raw", verbose = T)
+fspy <- buildTree(fspy, dim.type = "raw")
 # Tree plot
 plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
 
 # 2. PCA
-fspy <- buildTree(fspy, dim.type = "pca", dim.use = 1:4, verbose = T)
+fspy <- buildTree(fspy, dim.type = "pca", dim.use = 1:4)
 # Tree plot
 plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
 
 # 3. tSNE
-fspy <- buildTree(fspy, dim.type = "tsne", dim.use = 1:2, verbose = T)
+fspy <- buildTree(fspy, dim.type = "tsne", dim.use = 1:2)
 # Tree plot
 plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
 
 # 4. Diffusion maps
-fspy <- buildTree(fspy, dim.type = "dc", dim.use = 1:3, verbose = T)
+fspy <- buildTree(fspy, dim.type = "dc", dim.use = 1:3)
 # Tree plot
 plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
 
 # 5. UMAP
-fspy <- buildTree(fspy, dim.type = "umap", dim.use = 1:2, verbose = T)
+fspy <- buildTree(fspy, dim.type = "umap", dim.use = 1:2)
 # Tree plot
 plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
@@ -193,7 +192,7 @@ plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) +
 # The topology of a trajectory is mainly based on the interrelation 
 # of cell clusters, coordinates and dimensions, and in use case 1 and 
 # 2, we use "tsne" to construct the trajectory
-fspy <- buildTree(fspy, dim.type = "tsne", dim.use = 1:2, verbose = T)
+fspy <- buildTree(fspy, dim.type = "tsne", dim.use = 1:2)
 # Tree plot
 plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
@@ -262,37 +261,37 @@ plotBranchHeatmap(fspy, clustering_method = "ward.D")
 ###########################################
 
 # Set HSPCs as root cells
-fspy <- defRootCells(fspy, root.cells = c(9,25,90,30), verbose = T)
+fspy <- defRootCells(fspy, root.cells = c(9,25,90,30))
 fspy <- runPseudotime(fspy, verbose = T, dim.type = "raw")
 
 ###### Intermediate state cells for CD8 T cells
-fspy <- defLeafCells(fspy, leaf.cells = c(23,28,51), verbose = T)
+fspy <- defLeafCells(fspy, leaf.cells = c(23,28,51))
 fspy <- runWalk(fspy, backward.walk = F, verbose = T)
 fspy@meta.data$traj.value.log.CD8T <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for CD4 T cells
-fspy <- defLeafCells(fspy, leaf.cells = c(52,78,46), verbose = T)
+fspy <- defLeafCells(fspy, leaf.cells = c(52,78,46))
 fspy <- runWalk(fspy, backward.walk = F, verbose = T)
 fspy@meta.data$traj.value.log.CD4T <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for NK cells
-fspy <- defLeafCells(fspy, leaf.cells = c(54,48), verbose = T)
-fspy <- runWalk(fspy, backward.walk = F, verbose = T)
+fspy <- defLeafCells(fspy, leaf.cells = c(54,48))
+fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.NK <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for B cells
-fspy <- defLeafCells(fspy, leaf.cells = c(11,89,94), verbose = T)
-fspy <- runWalk(fspy, backward.walk = F, verbose = T)
+fspy <- defLeafCells(fspy, leaf.cells = c(11,89,94))
+fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.B <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for monocytes and granulocytes
-fspy <- defLeafCells(fspy, leaf.cells = c(49,93,42), verbose = T)
-fspy <- runWalk(fspy, backward.walk = F, verbose = T)
+fspy <- defLeafCells(fspy, leaf.cells = c(49,93,42))
+fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.MY <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for megakaryocyte and erythrocyte
-fspy <- defLeafCells(fspy, leaf.cells = c(14,31,100,63,98), verbose = T)
-fspy <- runWalk(fspy, backward.walk = F, verbose = T)
+fspy <- defLeafCells(fspy, leaf.cells = c(14,31,100,63,98))
+fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.ME <- fspy@meta.data$traj.value.log
 
 # Plot 2D tSNE. 

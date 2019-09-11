@@ -56,10 +56,11 @@ fcs.data <- runExprsMerge(fcs.files, comp = F, transformMethod = "none", fixedNu
 
 # Refine colnames of fcs data
 # for usecase 2
-recol <- c(`FITC-A<CD43>` = "CD43", `APC-A<CD34>` = "CD34", `BV421-A<CD90>` = "CD90",
-           `BV510-A<CD45RA>` = "CD45RA", `BV605-A<CD31>` = "CD31", `BV650-A<CD49f>` = "CD49f",
-           `BV 735-A<CD73>` = "CD73", `BV786-A<CD45>` = "CD45", `PE-A<FLK1>` = "FLK1",
-           `PE-Cy7-A<CD38>` = "CD38")
+recol <- c(`FITC-A<CD43>` = "CD43", `APC-A<CD34>` = "CD34", 
+           `BV421-A<CD90>` = "CD90", `BV510-A<CD45RA>` = "CD45RA", 
+           `BV605-A<CD31>` = "CD31", `BV650-A<CD49f>` = "CD49f",
+           `BV 735-A<CD73>` = "CD73", `BV786-A<CD45>` = "CD45", 
+           `PE-A<FLK1>` = "FLK1", `PE-Cy7-A<CD38>` = "CD38")
 colnames(fcs.data)[match(names(recol), colnames(fcs.data))] = recol
 fcs.data <- fcs.data[, recol]
 
@@ -74,8 +75,7 @@ markers <- c("CD43", "CD34", "CD90", "CD45RA", "CD31", "CD49f", "CD73", "CD45", 
 
 fspy <- createFSPY(raw.data = fcs.data, markers = markers,
                    meta.data = meta.data,
-                   normalization.method = "log",
-                   verbose = T)
+                   normalization.method = "log")
 
 # Cluster cells by SOM algorithm
 # Set random seed to make results reproducible
@@ -87,20 +87,20 @@ set.seed(2)
 fspy <- processingCluster(fspy, downsampling.size = 1)
 
 # run Principal Component Analysis (PCA)
-fspy <- runFastPCA(fspy, verbose = T)
+fspy <- runFastPCA(fspy)
 
 # run t-Distributed Stochastic Neighbor Embedding (tSNE)
 set.seed(1)
-fspy <- runTSNE(fspy, verbose = T)
+fspy <- runTSNE(fspy)
 
 # run Diffusion map
-fspy <- runDiffusionMap(fspy, verbose = T)
+fspy <- runDiffusionMap(fspy)
 
 # run Uniform Manifold Approximation and Projection (UMAP)
-fspy <- runUMAP(fspy, verbose = T)
+fspy <- runUMAP(fspy)
 
 # build minimum spanning tree based on UMAP
-fspy <- buildTree(fspy, dim.type = "umap", dim.use = 1:2, verbose = T)
+fspy <- buildTree(fspy, dim.type = "umap", dim.use = 1:2)
 
 ###########################################
 # This is visualization module
@@ -228,7 +228,7 @@ diff.list <- runDiff(fspy)
 # Pseudotime
 ###########################################
 
-fspy <- defRootCells(fspy, root.cells = c(15), verbose = T)
+fspy <- defRootCells(fspy, root.cells = c(15))
 
 fspy <- runPseudotime(fspy, verbose = T, dim.type = "umap", dim.use = 1:2)
 
@@ -270,19 +270,19 @@ cell.inter <- cell.inter[grep("D6|D8|D10", cell.inter)]
 sub.fspy <- subsetFSPY(fspy, cells = cell.inter)
 
 set.seed(1)
-sub.fspy <- runCluster(sub.fspy, cluster.method = "som", xdim = 4, ydim = 4, verbose = T)
+sub.fspy <- runCluster(sub.fspy, cluster.method = "som", xdim = 4, ydim = 4)
 
 # Do not perform downsampling
 set.seed(1)
-sub.fspy <- processingCluster(sub.fspy, perplexity = 2, downsampling.size = 1, force.resample = F)
+sub.fspy <- processingCluster(sub.fspy, perplexity = 2, downsampling.size = 1)
 
 # run Diffusion map
 set.seed(1)
-sub.fspy <- runDiffusionMap(sub.fspy, verbose = T)
+sub.fspy <- runDiffusionMap(sub.fspy)
 
-sub.fspy <- defRootCells(sub.fspy, root.cells = c(13), verbose = T)
+sub.fspy <- defRootCells(sub.fspy, root.cells = c(13))
 
-sub.fspy <- runPseudotime(sub.fspy, verbose = T, dim.type = "raw", dim.use = 1:2)
+sub.fspy <- runPseudotime(sub.fspy, dim.type = "raw", dim.use = 1:2)
 
 # 3D plot for FSPY
 plot3D(sub.fspy, item.use = c("DC_2","DC_1","DC_3"), color.by = "stage", 

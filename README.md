@@ -19,7 +19,7 @@ git clone https://github.com/JhuangLab/flowSpy-dataset.git
 
 ```
 
-Detailed code and results could be found in [Rmarkdown](https://github.com/JhuangLab/flowSpy-dataset/tree/master/Rmarkdown)
+Detailed code and results in **PDF** format can be found in [usecase1_2](https://github.com/JhuangLab/flowSpy-dataset/tree/master/Rmarkdown/usecase1_2.pdf) and [usecase3_4](https://github.com/JhuangLab/flowSpy-dataset/tree/master/Rmarkdown/usecase3_4.pdf)
 
 
 
