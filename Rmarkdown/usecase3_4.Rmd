@@ -44,7 +44,7 @@ library(stringr)
 # Read Flow Cytometry Data
 # It can be downloaded via `git clone https://github.com/ytdai/flowSpy-dataset.git` 
 # fcs.path musted be modified based on the download directory from GitHub
-fcs.path <- "../../flowSpy-dataset/FCS/usecase3_4/"
+fcs.path <- "../FCS/usecase3_4/"
 fcs.files <- paste0(fcs.path, "D", c(0,2,4,6,8,10), ".fcs")
 
 ###########################################

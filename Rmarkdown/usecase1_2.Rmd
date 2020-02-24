@@ -46,7 +46,7 @@ library(stringr)
 # Read Mass Cytometry Data
 # It can be downloaded via `git clone https://github.com/ytdai/flowSpy-dataset.git` 
 # fcs.path musted be modified based on the download directory from GitHub
-fcs.path <- "../../flowSpy-dataset/FCS/usecase1_2/"
+fcs.path <- "FCS/usecase1_2/"
 fcs.file <- paste0(fcs.path, "FR-FCM-ZY9R-Bone_Marrow_cytof.fcs")
 
 ###########################################
@@ -81,19 +81,19 @@ meta.data <- data.frame(cell = rownames(exp.data),
                         stage = "D0")
 fspy <- createFSPY(raw.data = exp.data, markers = markers,
                    meta.data = meta.data,
-                   normalization.method = "none")
+                   normalization.method = "none",
+                   verbose = T)
 
 # Cluster cells by SOM algorithm
 # Set random seed to make results reproducible
-set.seed(6)
-fspy <- runCluster(fspy, cluster.method = "som", xdim = 10, ydim = 10)
+set.seed(8)
+fspy <- runCluster(fspy, cluster.method = "som", xdim = 10, ydim = 10, verbose = T)
 
 # Cluster based downsampling
 # The total cell number is 236,187, and we can just keep 10% cells to reduce 
 # computation load and improve computation time.
 # Downsampling by setting downsampleing.size 0.1
-set.seed(1)
-fspy <- processingCluster(fspy, perplexity = 5,downsampling.size = 0.1)
+fspy <- processingCluster(fspy, perplexity = 5, downsampling.size = 0.1)
 
 # Now only 23,664 cells are enrolled in the dimensionality reduction
 fspy
@@ -174,7 +174,7 @@ plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) +
 # 3. tSNE
 fspy <- buildTree(fspy, dim.type = "tsne", dim.use = 1:2)
 # Tree plot
-plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
+plotTree(fspy, color.by = "CD4", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
 
 # 4. Diffusion maps
@@ -194,7 +194,7 @@ plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) +
 # 2, we use "tsne" to construct the trajectory
 fspy <- buildTree(fspy, dim.type = "tsne", dim.use = 1:2)
 # Tree plot
-plotTree(fspy, color.by = "CD3", show.node.name = T, cex.size = 1) + 
+plotTree(fspy, color.by = "CD8", show.node.name = T, cex.size = 1) + 
   scale_colour_gradientn(colors = c("#00599F", "#EEEEEE", "#FF3222"))
 
 plotTree(fspy, color.by = "CD34", show.node.name = T, cex.size = 1) + 
@@ -202,17 +202,16 @@ plotTree(fspy, color.by = "CD34", show.node.name = T, cex.size = 1) +
 
 
 ############# Modify branch id
-fspy@meta.data$branch.id[fspy@meta.data$cluster.id %in% c(9,25,90,30)] = 12
-fspy@meta.data$branch.id[fspy@meta.data$cluster.id %in% c(5,62)] = 6
-fspy@meta.data$branch.id[fspy@meta.data$cluster.id %in% c(38,87)] = 3
+fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(5,2,10)] = "CD4 T cells"
+fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(7,13)] = "CD8 T cells"
+fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(1,6,12)] = "Megakaryocytic"
+fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(3)] = "Dendritic cells"
+fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(11)] = "B cells"
+fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(4,8,9,14)] = "Myeloid"
 
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(12)] = "HSCs"
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(1,2)] = "CD8 T cells"
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(4,5)] = "CD4 T cells"
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(3,9,11)] = "Megakaryocytic"
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(6)] = "NK cells"
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(7)] = "B cells"
-fspy@meta.data$branch.id[fspy@meta.data$branch.id %in% c(8,10)] = "Myeloid"
+fspy@meta.data$branch.id[fspy@meta.data$cluster.id %in% c(74,36,89,11)] = "HSCs"
+fspy@meta.data$branch.id[fspy@meta.data$cluster.id %in% c(62,14)] = "CD8 T cells"
+fspy@meta.data$branch.id[fspy@meta.data$cluster.id %in% c(72)] = "B cells"
 
 # Run differential expressed markers of different branch
 diff.info <- runDiff(fspy)
@@ -261,36 +260,36 @@ plotBranchHeatmap(fspy, clustering_method = "ward.D")
 ###########################################
 
 # Set HSPCs as root cells
-fspy <- defRootCells(fspy, root.cells = c(9,25,90,30))
+fspy <- defRootCells(fspy, root.cells = c(36,89,11))
 fspy <- runPseudotime(fspy, verbose = T, dim.type = "raw")
 
 ###### Intermediate state cells for CD8 T cells
-fspy <- defLeafCells(fspy, leaf.cells = c(23,28,51))
+fspy <- defLeafCells(fspy, leaf.cells = c(99,97))
 fspy <- runWalk(fspy, backward.walk = F, verbose = T)
 fspy@meta.data$traj.value.log.CD8T <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for CD4 T cells
-fspy <- defLeafCells(fspy, leaf.cells = c(52,78,46))
+fspy <- defLeafCells(fspy, leaf.cells = c(56,4,2))
 fspy <- runWalk(fspy, backward.walk = F, verbose = T)
 fspy@meta.data$traj.value.log.CD4T <- fspy@meta.data$traj.value.log
 
-###### Intermediate state cells for NK cells
-fspy <- defLeafCells(fspy, leaf.cells = c(54,48))
+###### Intermediate state cells for DCs
+fspy <- defLeafCells(fspy, leaf.cells = c(88))
 fspy <- runWalk(fspy, backward.walk = F)
-fspy@meta.data$traj.value.log.NK <- fspy@meta.data$traj.value.log
+fspy@meta.data$traj.value.log.DC <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for B cells
-fspy <- defLeafCells(fspy, leaf.cells = c(11,89,94))
+fspy <- defLeafCells(fspy, leaf.cells = c(10,21))
 fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.B <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for monocytes and granulocytes
-fspy <- defLeafCells(fspy, leaf.cells = c(49,93,42))
+fspy <- defLeafCells(fspy, leaf.cells = c(22,27))
 fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.MY <- fspy@meta.data$traj.value.log
 
 ###### Intermediate state cells for megakaryocyte and erythrocyte
-fspy <- defLeafCells(fspy, leaf.cells = c(14,31,100,63,98))
+fspy <- defLeafCells(fspy, leaf.cells = c(79,93))
 fspy <- runWalk(fspy, backward.walk = F)
 fspy@meta.data$traj.value.log.ME <- fspy@meta.data$traj.value.log
 
@@ -330,8 +329,8 @@ pheatmap(t(plot.meta.sub[, markers]), scale  = "row",
          color = colorRampPalette(c("blue","blue","white","red","red"))(100),
          fontsize_col = 0.01)
 
-# heatmap for NK cells
-plot.meta.sub <- plot.meta[which(plot.meta$traj.value.log.NK > 0), ]
+# heatmap for Dendritic cells
+plot.meta.sub <- plot.meta[which(plot.meta$traj.value.log.DC > 0), ]
 plot.meta.sub <- plot.meta.sub[order(plot.meta.sub$pseudotime), ]
 pheatmap(t(plot.meta.sub[, markers]), scale  = "row",
          cluster_rows = T, cluster_cols = F, cluster_method = "ward.D",
