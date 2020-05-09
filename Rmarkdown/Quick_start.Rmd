@@ -47,6 +47,36 @@ The flowSpy package is developed to complete the majority of standard analysis a
 
 - **Visualization**. The visualization module can provide clear and concise visualization of FCS data in an effective and easy-to-comprehend manner. flowSpy package offers various plotting functions to generate customizable and publication-quality plots. Two-dimensional or three-dimensional plot can fit most requirement from dimensionality reduction results. And tree-based plot can visualize cell trajectory as force-directed layout tree. Other special plots such as heatmap and violin plot are also provided in flowSpy.
 
+
+## Installation
+
+The flowSpy is freely available at [GitHub](https://github.com/JhuangLab/flowSpy) and [Bioconductor](https://bioconductor.org/packages/flowSpy/).
+
+Installation via Bioconductor
+
+``` {r eval = FALSE}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("flowSpy")
+
+```
+
+Installation via GitHub
+
+This requires the `devtools` package to be installed first.
+
+``` {r eval = FALSE}
+
+# If not already installed
+install.packages("devtools") 
+devtools::install_github("JhuangLab/flowSpy")
+
+library(flowSpy)
+
+```
+
 ## Quick start
 
 ``` {r eval = TRUE, fig.width = 12, fig.height = 10}
@@ -234,10 +264,21 @@ plotHeatmap(fspy, downsize = 1000, cluster_rows = TRUE, clustering_method = "war
 plotCluster(fspy, item.use = c("tSNE_1", "tSNE_2"), color.by = "traj.value.log", 
             size = 10, show.cluser.id = TRUE, category = "numeric") + 
  scale_colour_gradientn(colors = c("#EEEEEE", "#FF3222", "#CC0000", "#CC0000"))
+```
 
-# Show session information
+## Link to the basic tutorial
+
+The basic tutorial provides a more detailed version of flowSpy workflow. See the basic tutorial of flowSpy, please visit [Tutorial of flowSpy](https://ytdai.github.io/flowSpy/basic.html).
+
+## Link to the time-course tutorial
+
+The time-course tutorial provides a more detailed version of how to deal with time-course FCS data using flowSpy. See time-course data analysis of flowSpy, please visit [Time-course workflow of flowSpy](https://ytdai.github.io/flowSpy/Time_course.html).
+
+
+## Session information
+
+``` {r eval = TRUE, fig.width = 9, fig.height = 8}
 sessionInfo()
-
 ```
 
 ## References

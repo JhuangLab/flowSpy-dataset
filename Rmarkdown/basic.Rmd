@@ -158,7 +158,7 @@ suppressMessages({
 # Read Flow Cytometry Data
 # It can be downloaded via `git clone https://github.com/JhuangLab/flowSpy-dataset.git` 
 # fcs.path musted be modified based on the download directory from GitHub
-fcs.path <- "FCS/basic/"
+fcs.path <- "FCS/preprocessing/"
 fcs.file <- paste0(fcs.path, "D10_raw.fcs")
 
 ###########################################
@@ -295,7 +295,7 @@ suppressMessages({
 # Read Flow Cytometry Data
 # It can be downloaded via `git clone https://github.com/JhuangLab/flowSpy-dataset.git` 
 # fcs.path musted be modified based on the download directory from GitHub
-fcs.path <- "FCS/basic/"
+fcs.path <- "FCS/preprocessing/"
 fcs.file <- paste0(fcs.path, "D10_raw.fcs")
 
 ###########################################
@@ -386,7 +386,7 @@ suppressMessages({
 # Read Flow Cytometry Data
 # It can be downloaded via `git clone https://github.com/JhuangLab/flowSpy-dataset.git` 
 # fcs.path musted be modified based on the download directory from GitHub
-fcs.path <- "FCS/usecase1/"
+fcs.path <- "FCS/basic/"
 fcs.file <- paste0(fcs.path, "FR-FCM-ZY9R-Bone_Marrow_cytof.fcs")
 
 ###########################################
@@ -680,7 +680,7 @@ plotPseudotimeTraj(fspy, var.cols = T) +
 
 ###### Intermediate state cells for CD8 T cells
 fspy <- defLeafCells(fspy, leaf.cells = c(99,97))
-fspy <- runWalk(fspy, backward.walk = F, verbose = T)
+fspy <- runWalk(fspy, verbose = TRUE)
 fspy@meta.data$traj.value.log.CD8T <- fspy@meta.data$traj.value.log
 
 ### fetch plot information
@@ -704,38 +704,14 @@ pheatmap(t(plot.meta.sub[, colnames(fspy.data)]), scale  = "row",
 
 If there is any error in installing or librarying the flowSpy package, please contact us via e-mail forlynna@sjtu.edu.cn
 
-## Version History
 
-Changes in version 1.2.1 (2020-05-04)
+## Link to the quick start tutorial
 
- - Set linear transformation of FSC and SSC as optional in `runExprsMerge` and `runExprsExtract`
- - Fixed bugs in vignette
+The quick start tutorial provides a quick-reading version of flowSpy workflow. See the quick start tutorial of flowSpy, please visit [Quick start of flowSpy](https://ytdai.github.io/flowSpy/Quick_start.html).
 
-Changes in version 1.2.0 (2020-04-28)
+## Link to the time-course tutorial
 
- - Updata version for Bioc 11
-
-Changes in version 1.1.5 (2020-04-20)
-
- - Fixed installation errors in Linux and Windows
- - Fixed legend name of figure
- - Fixed errors in building vignette
-
-Changes in version 1.0.4 (2020-03-19)
-
- - Fixed installation errors in Linux and Windows
-
-Changes in version 1.0.3 (2020-03-17)
-
- - Fixed bugs in `runDiff`
-
-Changes in version 1.0.1 (2020-02-15)
-
- - Add uniform downsampling in function `processingCluster`
-
-Changes in version 1.0.1 (2019-10-17)
-
- - Fixed some warnings in the checking process of Bioc 3.10 
+The time-course tutorial provides a more detailed version of how to deal with time-course FCS data using flowSpy. See time-course data analysis of flowSpy, please visit [Time-course workflow of flowSpy](https://ytdai.github.io/flowSpy/Time_course.html).
 
 
 ## Session Information

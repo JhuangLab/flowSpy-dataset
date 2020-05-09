@@ -50,7 +50,7 @@ library(stringr)
 # Read Flow Cytometry Data
 # It can be downloaded via `git clone https://github.com/ytdai/flowSpy-dataset.git` 
 # fcs.path musted be modified based on the download directory from GitHub
-fcs.path <- "FCS/usecase2/"
+fcs.path <- "FCS/time_course/"
 fcs.files <- paste0(fcs.path, "D", c(0,2,4,6,8,10), ".fcs")
 
 ###########################################
@@ -303,6 +303,21 @@ plot3D(sub.fspy, item.use = c("DC_2","DC_1","DC_3"),
 
 
 ```
+
+
+## Bug Reports
+
+If there is any error in installing or librarying the flowSpy package, please contact us via e-mail forlynna@sjtu.edu.cn
+
+
+## Link to the quick start tutorial
+
+The quick start tutorial provides a quick-reading version of flowSpy workflow. See the quick start tutorial of flowSpy, please visit [Quick start of flowSpy](https://ytdai.github.io/flowSpy/Quick_start.html).
+
+## Link to the basic tutorial
+
+The basic tutorial provides a more detailed version of flowSpy workflow. See the basic tutorial of flowSpy, please visit [Tutorial of flowSpy](https://ytdai.github.io/flowSpy/basic.html).
+
 
 ## Session information
 
