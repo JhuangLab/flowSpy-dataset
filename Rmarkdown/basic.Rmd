@@ -714,6 +714,25 @@ The quick start tutorial provides a quick-reading version of flowSpy workflow. S
 The time-course tutorial provides a more detailed version of how to deal with time-course FCS data using flowSpy. See time-course data analysis of flowSpy, please visit [Time-course workflow of flowSpy](https://ytdai.github.io/flowSpy/Time_course.html).
 
 
+## Note
+
+----------------
+
+Dear flowSpy users:
+
+To improve the identification of this package and avoid awkward duplication of names in some situations, we decided to change the name of `flowSpy` to `CytoTree`. The package name of `CytoTree` more fits the functional orientation of this software. The usage and update of `flowSpy` and `CytoTree` will be consistent until the end of Bioc 3.11. And for the 3.12 devel, flowSpy will be deprecated.
+
+The package `CytoTree` has been added to Bioconductor (https://bioconductor.org/packages/CytoTree/), we recommend that users can download this package and replace `flowSpy` as soon as possible.
+
+We apologized for the inconvenience.
+
+flowSpy team
+
+2020-07-09
+
+----------------
+
+
 ## Session Information
 
 ``` {r eval = TRUE, fig.width = 6, fig.height = 6.5}

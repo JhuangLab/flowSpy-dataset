@@ -33,6 +33,7 @@ To illustrate the usage of flowSpy on differential trajectory reconstruction of 
 
 This tutorial contains key steps of `flowSpy` time-course workflow, including how to calculate the pseudotime and how to define cell subsets and rebuild an FSPY object using flowSpy. This use case also provided a framework for time-course cytometric data analysis and might provide support for research on stem cell reprogramming.
 
+
 ## Preprocessing
 
 ``` {r eval = TRUE, fig.width = 9, fig.height = 8}
@@ -317,6 +318,25 @@ The quick start tutorial provides a quick-reading version of flowSpy workflow. S
 ## Link to the basic tutorial
 
 The basic tutorial provides a more detailed version of flowSpy workflow. See the basic tutorial of flowSpy, please visit [Tutorial of flowSpy](https://ytdai.github.io/flowSpy/basic.html).
+
+
+## Note
+
+----------------
+
+Dear flowSpy users:
+
+To improve the identification of this package and avoid awkward duplication of names in some situations, we decided to change the name of `flowSpy` to `CytoTree`. The package name of `CytoTree` more fits the functional orientation of this software. The usage and update of `flowSpy` and `CytoTree` will be consistent until the end of Bioc 3.11. And for the 3.12 devel, flowSpy will be deprecated.
+
+The package `CytoTree` has been added to Bioconductor (https://bioconductor.org/packages/CytoTree/), we recommend that users can download this package and replace `flowSpy` as soon as possible.
+
+We apologized for the inconvenience.
+
+flowSpy team
+
+2020-07-09
+
+----------------
 
 
 ## Session information

@@ -1,6 +1,26 @@
 
 # flowSpy-dataset <img src="https://github.com/JhuangLab/flowSpy/blob/master/inst/figures/logo.png" align="right" height=150 width=150/>
 
+
+## Note
+
+----------------
+
+Dear flowSpy users:
+
+To improve the identification of this package and avoid awkward duplication of names in some situations, we decided to change the name of `flowSpy` to `CytoTree`. The package name of `CytoTree` more fits the functional orientation of this software. The usage and update of `flowSpy` and `CytoTree` will be consistent until the end of Bioc 3.11. And for the 3.12 devel, flowSpy will be deprecated.
+
+The package `CytoTree` has been added to Bioconductor (https://bioconductor.org/packages/CytoTree/), we recommend that users can download this package and replace `flowSpy` as soon as possible.
+
+We apologized for the inconvenience.
+
+flowSpy team
+
+2020-07-09
+
+----------------
+
+
 ## 1 Introduction
 
 The detailed rerunnable source code, raw FCS data and results for flowSpy base and time-course workflow.
